@@ -69,8 +69,6 @@ public class AddEditNoteActivity extends AppCompatActivity {
         } else {
             setTitle("Add Note");
         }
-
-
     }
 
     private void saveNote() {
