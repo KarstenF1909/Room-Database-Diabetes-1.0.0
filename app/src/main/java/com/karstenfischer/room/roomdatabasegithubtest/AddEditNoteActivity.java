@@ -1,16 +1,25 @@
 package com.karstenfischer.room.roomdatabasegithubtest;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.NumberPicker;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
-public class AddEditNoteActivity extends AppCompatActivity {
+public class AddEditNoteActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     public static final String EXTRA_ID = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_ID";
     public static final String EXTRA_TITLE = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_TITLE";
@@ -34,17 +43,31 @@ public class AddEditNoteActivity extends AppCompatActivity {
     private EditText etKorrektur;
     private EditText etBasal;
 
-    int blutzuckerHint;
-    float beHint;
-    float bolusHint;
-    float korrekturHint;
-    float basalHint;
+    private TextView tvDatum;
+    private TextView tvUhrzeit;
+    private TextView tvCurrentTimeMillis;
+    private TextView tveintragDatumMillis;
+
+
+ private    int blutzuckerHint;
+ private    float beHint;
+  private   float bolusHint;
+  private   float korrekturHint;
+  private   float basalHint;
+
+  private FloatingActionButton fabDate;
+    private FloatingActionButton fabTime;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
+
+        //Wichtig zum Reden!!!
+        TTS.init(getApplicationContext());
 
         etTitle = findViewById(R.id.etTitle);
         etDescription = findViewById(R.id.etDescription);
@@ -56,10 +79,39 @@ public class AddEditNoteActivity extends AppCompatActivity {
         etKorrektur = findViewById(R.id.etKorrektur);
         etBasal = findViewById(R.id.etBasal);
 
+        fabDate = findViewById(R.id.fabDate);
+        fabTime = findViewById(R.id.fabTime);
+
+        tvDatum= findViewById(R.id.tvDatum);
+        tvUhrzeit= findViewById(R.id.tvUhrzeit);
+        tvCurrentTimeMillis= findViewById(R.id.tvCurrentTimeMillis);
+        tveintragDatumMillis= findViewById(R.id.tvEintragDatumMillis);
+
+
+
+
         npPriority.setMinValue(1);
         npPriority.setMaxValue(10);
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
+
+
+        fabDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatumEingeben();
+            }
+        });
+
+        fabTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UhrzeitEingeben();
+
+            }
+        });
+
+
 
         Intent intent = getIntent();
 
@@ -73,24 +125,34 @@ public class AddEditNoteActivity extends AppCompatActivity {
 
             blutzuckerHint = intent.getIntExtra(EXTRA_BLUTZUCKER, 0);
             etBlutzucker.setHint(String.valueOf(blutzuckerHint));
+            etBlutzucker.setHintTextColor(getResources().getColor(R.color.schriftGrauHell));
 
             beHint = intent.getFloatExtra(EXTRA_BE, 0);
             etBe.setHint(String.valueOf(beHint));
+            etBe.setHintTextColor(getResources().getColor(R.color.schriftGrauHell));
+
 
             bolusHint = intent.getFloatExtra(EXTRA_BOLUS, 0);
             etBolus.setHint(String.valueOf(bolusHint));
+            etBolus.setHintTextColor(getResources().getColor(R.color.schriftGrauHell));
 
             korrekturHint = intent.getFloatExtra(EXTRA_KORREKTUR, 0);
             etKorrektur.setHint(String.valueOf(korrekturHint));
+            etKorrektur.setHintTextColor(getResources().getColor(R.color.schriftGrauHell));
 
             basalHint = intent.getFloatExtra(EXTRA_BASAL, 0);
             etBasal.setHint(String.valueOf(basalHint));
+            etBasal.setHintTextColor(getResources().getColor(R.color.schriftGrauHell));
 
 
         } else {
             setTitle("Add Note");
         }
     }
+
+
+
+
 
     private void saveNote() {
         String title = etTitle.getText().toString();
@@ -179,5 +241,89 @@ public class AddEditNoteActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void DatumEingeben() {
+        DialogFragment datePicker = new DateFragment();
+
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor;
+        editor = sharedPreferences.edit();
+        //todo datum = tvDatum.getText().toString();
+        //uhrzeit=tvUhrzeit.getText().toString();
+        //todo editor.putString("datum", datum);
+
+        //TTS.speak("date 1 is" + datum);
+        editor.apply();
+        //editor.putString("automatischOderManuell", automatischOderManuell);
+        ////editor.putString("datum", datum);
+        ////editor.putString("uhrzeit", uhrzeit);
+        //editor.apply();
+
+        datePicker.show(getSupportFragmentManager(), "date picker");
+    }
+
+    private void UhrzeitEingeben() {
+        DialogFragment timePicker = new TimeFragment();
+        //TTS.speak("time picker");
+        //todo automatischOderManuell = "manuell";
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor;
+        editor = sharedPreferences.edit();
+        //todo editor.putString("automatischOderManuell", automatischOderManuell);
+        //datum=tvDatum.getText().toString();
+        //todo uhrzeit = tvUhrzeit.getText().toString();
+
+        //editor.putString("datum", datum);
+        //todo editor.putString("uhrzeit", uhrzeit);
+        //TTS.speak("clock button is" + uhrzeit);
+        editor.apply();
+
+        //automatischOderManuell = "manuell";
+        //editor = sharedPreferences.edit();
+        //editor.putString("automatischOderManuell", automatischOderManuell);
+        //editor.putString("datum", datum);
+        //editor.putString("uhrzeit", uhrzeit);
+        //editor.apply();
+
+        timePicker.show(getSupportFragmentManager(), "time picker");
+    }
+
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        //Calendar c = Calendar.getInstance();
+        //c.set(Calendar.YEAR, year);
+        //c.set(Calendar.MONTH, month);
+        //c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        //String datumLang = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
+        //Aktuelles Datum
+        //datum = DateFormat.getDateInstance().format(c.getTime());
+
+        //Dasselbe Datum anzeigen!!!
+        //todo datum = dayOfMonth + "." + (month + 1) + "." + year;
+        //todo tvDatum.setText(datum);
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        String minuteString;
+        String stundeString;
+
+        if (minute < 10) {
+            minuteString = "0" + minute;
+        } else {
+            minuteString = "" + minute;
+        }
+        if (hourOfDay < 10) {
+            stundeString = "0" + hourOfDay;
+        } else {
+            stundeString = "" + hourOfDay;
+        }
+        //todo uhrzeitUndSekunde = stundeString + ":" + minuteString + ":00";
+        //Aktuelle Uhrzeit
+        //todo uhrzeit = stundeString + ":" + minuteString;
+        //TTS.speak("Die uhr sagt"+uhrzeit);
+        //todo tvUhrzeit.setText(uhrzeit);
     }
 }
