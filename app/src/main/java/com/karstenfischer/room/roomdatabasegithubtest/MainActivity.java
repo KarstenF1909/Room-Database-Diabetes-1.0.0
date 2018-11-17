@@ -86,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
                 intent.putExtra(AddEditNoteActivity.EXTRA_BLUTZUCKER,note.getBlutzucker());
                 intent.putExtra(AddEditNoteActivity.EXTRA_BE,note.getBe());
+                intent.putExtra(AddEditNoteActivity.EXTRA_BOLUS,note.getBolus());
+                intent.putExtra(AddEditNoteActivity.EXTRA_KORREKTUR,note.getKorrektur());
+                intent.putExtra(AddEditNoteActivity.EXTRA_BASAL,note.getBasal());
 
                 startActivityForResult(intent,EDIT_NOTE_REQUEST);
             }
@@ -103,8 +106,11 @@ public class MainActivity extends AppCompatActivity {
 
             int blutzucker=data.getIntExtra(AddEditNoteActivity.EXTRA_BLUTZUCKER,1);
             float be=data.getFloatExtra(AddEditNoteActivity.EXTRA_BE,1);
+            float bolus=data.getFloatExtra(AddEditNoteActivity.EXTRA_BOLUS,1);
+            float korrektur=data.getFloatExtra(AddEditNoteActivity.EXTRA_KORREKTUR,1);
+            float basal=data.getFloatExtra(AddEditNoteActivity.EXTRA_BASAL,1);
 
-            Note note =new Note(title,description,priority,blutzucker,be);
+            Note note =new Note(title,description,priority,blutzucker,be,bolus,korrektur,basal);
             noteViewModel.insert(note);
             Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
         }
@@ -121,8 +127,11 @@ public class MainActivity extends AppCompatActivity {
 
             int blutzucker=data.getIntExtra(AddEditNoteActivity.EXTRA_BLUTZUCKER,1);
             float be=data.getFloatExtra(AddEditNoteActivity.EXTRA_BE,1);
+            float bolus=data.getFloatExtra(AddEditNoteActivity.EXTRA_BOLUS,1);
+            float korrektur=data.getFloatExtra(AddEditNoteActivity.EXTRA_KORREKTUR,1);
+            float basal=data.getFloatExtra(AddEditNoteActivity.EXTRA_BASAL,1);
 
-            Note note=new Note(title,description,priority,blutzucker,be);
+            Note note=new Note(title,description,priority,blutzucker,be,bolus,korrektur,basal);
             note.setId(id);
             noteViewModel.update(note);
             Toast.makeText(this, "Note updated", Toast.LENGTH_SHORT).show();

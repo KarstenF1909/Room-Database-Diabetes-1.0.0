@@ -19,6 +19,9 @@ public class AddEditNoteActivity extends AppCompatActivity {
 
     public static final String EXTRA_BLUTZUCKER = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_BLUTZUCKER";
     public static final String EXTRA_BE = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_BE";
+    public static final String EXTRA_BOLUS = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_BOLUS";
+    public static final String EXTRA_KORREKTUR = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_KORREKTUR";
+    public static final String EXTRA_BASAL = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_BASAL";
 
 
     private EditText etTitle;
@@ -27,9 +30,15 @@ public class AddEditNoteActivity extends AppCompatActivity {
 
     private EditText etBlutzucker;
     private EditText etBe;
+    private EditText etBolus;
+    private EditText etKorrektur;
+    private EditText etBasal;
 
     int blutzuckerHint;
     float beHint;
+    float bolusHint;
+    float korrekturHint;
+    float basalHint;
 
 
     @Override
@@ -43,6 +52,9 @@ public class AddEditNoteActivity extends AppCompatActivity {
 
         etBlutzucker = findViewById(R.id.etBlutzucker);
         etBe = findViewById(R.id.etBe);
+        etBolus = findViewById(R.id.etBolus);
+        etKorrektur = findViewById(R.id.etKorrektur);
+        etBasal = findViewById(R.id.etBasal);
 
         npPriority.setMinValue(1);
         npPriority.setMaxValue(10);
@@ -65,6 +77,15 @@ public class AddEditNoteActivity extends AppCompatActivity {
             beHint = intent.getFloatExtra(EXTRA_BE, 0);
             etBe.setHint(String.valueOf(beHint));
 
+            bolusHint = intent.getFloatExtra(EXTRA_BOLUS, 0);
+            etBolus.setHint(String.valueOf(bolusHint));
+
+            korrekturHint = intent.getFloatExtra(EXTRA_KORREKTUR, 0);
+            etKorrektur.setHint(String.valueOf(korrekturHint));
+
+            basalHint = intent.getFloatExtra(EXTRA_BASAL, 0);
+            etBasal.setHint(String.valueOf(basalHint));
+
 
         } else {
             setTitle("Add Note");
@@ -77,6 +98,10 @@ public class AddEditNoteActivity extends AppCompatActivity {
         int priority = npPriority.getValue();
         int blutzucker;
         float be;
+        float bolus;
+        float korrektur;
+        float basal;
+
 
         if (etBlutzucker.getText().toString().isEmpty()) {
             blutzucker = blutzuckerHint;
@@ -92,6 +117,27 @@ public class AddEditNoteActivity extends AppCompatActivity {
         }
 
 
+        if (etBolus.getText().toString().isEmpty()) {
+            bolus = bolusHint;
+        } else {
+            bolus = Float.parseFloat(etBolus.getText().toString());
+        }
+
+
+        if (etKorrektur.getText().toString().isEmpty()) {
+            korrektur = korrekturHint;
+        } else {
+            korrektur = Float.parseFloat(etKorrektur.getText().toString());
+        }
+
+
+        if (etBasal.getText().toString().isEmpty()) {
+            basal = basalHint;
+        } else {
+            basal = Float.parseFloat(etBasal.getText().toString());
+        }
+
+
         //if(title.trim().isEmpty()||descrition.trim().isEmpty()){
         //    Toast.makeText(this, "Please insert title and description", Toast.LENGTH_SHORT).show();
         //    return;
@@ -104,6 +150,9 @@ public class AddEditNoteActivity extends AppCompatActivity {
 
         data.putExtra(EXTRA_BLUTZUCKER, blutzucker);
         data.putExtra(EXTRA_BE, be);
+        data.putExtra(EXTRA_BOLUS, bolus);
+        data.putExtra(EXTRA_KORREKTUR, korrektur);
+        data.putExtra(EXTRA_BASAL, basal);
 
         int id = getIntent().getIntExtra(EXTRA_ID, -1);
         if (id != -1) {

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NoteAdapter extends ListAdapter<Note,NoteAdapter.NoteHolder> {
+public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
 
 
     private OnItemClickListener listener;
@@ -21,22 +21,25 @@ public class NoteAdapter extends ListAdapter<Note,NoteAdapter.NoteHolder> {
         super(DIFF_CALLBACK);
     }
 
-    private static  final DiffUtil.ItemCallback<Note> DIFF_CALLBACK=new DiffUtil.ItemCallback<Note>() {
+    private static final DiffUtil.ItemCallback<Note> DIFF_CALLBACK = new DiffUtil.ItemCallback<Note>() {
         @Override
         //public boolean areItemsTheSame(@NonNull Note note, @NonNull Note t1) {
         public boolean areItemsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
-            return oldItem.getId()==newItem.getId();
+            return oldItem.getId() == newItem.getId();
         }
 
         @Override
         //public boolean areContentsTheSame(@NonNull Note note, @NonNull Note t1) {
         public boolean areContentsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
-            return oldItem.getTitle().equals(newItem.getTitle())&&
-                    oldItem.getDescription().equals(newItem.getDescription())&&
-                    oldItem.getPriority()==newItem.getPriority()&&
+            return oldItem.getTitle().equals(newItem.getTitle()) &&
+                    oldItem.getDescription().equals(newItem.getDescription()) &&
+                    oldItem.getPriority() == newItem.getPriority() &&
 
-                    oldItem.getBlutzucker()==newItem.getBlutzucker()&&
-                    oldItem.getBe()==newItem.getBe();
+                    oldItem.getBlutzucker() == newItem.getBlutzucker() &&
+                    oldItem.getBe() == newItem.getBe() &&
+                    oldItem.getBolus() == newItem.getBolus() &&
+                    oldItem.getKorrektur() == newItem.getKorrektur() &&
+                    oldItem.getBasal() == newItem.getBasal();
         }
     };
 
@@ -57,6 +60,9 @@ public class NoteAdapter extends ListAdapter<Note,NoteAdapter.NoteHolder> {
 
         noteHolder.tvBlutzucker.setText(String.valueOf(currentNote.getBlutzucker()));
         noteHolder.tvBe.setText(String.valueOf(currentNote.getBe()));
+        noteHolder.tvBolus.setText(String.valueOf(currentNote.getBolus()));
+        noteHolder.tvKorrektur.setText(String.valueOf(currentNote.getKorrektur()));
+        noteHolder.tvBasal.setText(String.valueOf(currentNote.getBasal()));
     }
 
     //Für onSwipe
@@ -71,6 +77,9 @@ public class NoteAdapter extends ListAdapter<Note,NoteAdapter.NoteHolder> {
 
         private TextView tvBlutzucker;
         private TextView tvBe;
+        private TextView tvBolus;
+        private TextView tvKorrektur;
+        private TextView tvBasal;
 
         public NoteHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,6 +89,9 @@ public class NoteAdapter extends ListAdapter<Note,NoteAdapter.NoteHolder> {
 
             tvBlutzucker = itemView.findViewById(R.id.tvBlutzucker);
             tvBe = itemView.findViewById(R.id.tvBe);
+            tvBolus = itemView.findViewById(R.id.tvBolus);
+            tvKorrektur = itemView.findViewById(R.id.tvKorrektur);
+            tvBasal = itemView.findViewById(R.id.tvBasal);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

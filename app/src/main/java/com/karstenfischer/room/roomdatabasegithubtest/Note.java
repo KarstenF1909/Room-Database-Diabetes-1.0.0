@@ -15,16 +15,22 @@ public class Note {
 
     private int blutzucker;
     private float be;
+    private float bolus;
+    private float korrektur;
+    private float basal;
 
 
     //Constructor
-    public Note(String title, String description, int priority,int blutzucker,float be) {
+    public Note(String title, String description, int priority,int blutzucker,float be,float bolus,float korrektur,float basal) {
         this.title = title;
         this.description = description;
         this.priority = priority;
 
         this.blutzucker = blutzucker;
         this.be = be;
+        this.bolus = bolus;
+        this.korrektur = korrektur;
+        this.basal = basal;
     }
 
 
@@ -56,5 +62,17 @@ public class Note {
 
     public float getBe() {
         return be;
+    }
+
+    public float getBolus() {
+        return bolus;
+    }
+
+    public float getKorrektur() {
+        return korrektur;
+    }
+
+    public float getBasal() {
+        return basal;
     }
 }
