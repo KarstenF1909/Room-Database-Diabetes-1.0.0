@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable List<Note> notes) {
                 //update Recyclerview
-                adapter.setNotes(notes);
+                adapter.submitList(notes);
 
                 Toast.makeText(MainActivity.this, "onChanged", Toast.LENGTH_SHORT).show();
             }
@@ -83,6 +83,10 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(AddEditNoteActivity.EXTRA_TITLE,note.getTitle());
                 intent.putExtra(AddEditNoteActivity.EXTRA_DESCRIPTION,note.getDescription());
                 intent.putExtra(AddEditNoteActivity.EXTRA_PRIORITY,note.getPriority());
+
+                intent.putExtra(AddEditNoteActivity.EXTRA_BLUTZUCKER,note.getBlutzucker());
+                intent.putExtra(AddEditNoteActivity.EXTRA_BE,note.getBe());
+
                 startActivityForResult(intent,EDIT_NOTE_REQUEST);
             }
         });
@@ -97,7 +101,10 @@ public class MainActivity extends AppCompatActivity {
             String description=data.getStringExtra(AddEditNoteActivity.EXTRA_DESCRIPTION);
             int priority=data.getIntExtra(AddEditNoteActivity.EXTRA_PRIORITY,1);
 
-            Note note =new Note(title,description,priority);
+            int blutzucker=data.getIntExtra(AddEditNoteActivity.EXTRA_BLUTZUCKER,1);
+            float be=data.getFloatExtra(AddEditNoteActivity.EXTRA_BE,1);
+
+            Note note =new Note(title,description,priority,blutzucker,be);
             noteViewModel.insert(note);
             Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
         }
@@ -112,7 +119,10 @@ public class MainActivity extends AppCompatActivity {
             String description=data.getStringExtra(AddEditNoteActivity.EXTRA_DESCRIPTION);
             int priority=data.getIntExtra(AddEditNoteActivity.EXTRA_PRIORITY,1);
 
-            Note note=new Note(title,description,priority);
+            int blutzucker=data.getIntExtra(AddEditNoteActivity.EXTRA_BLUTZUCKER,1);
+            float be=data.getFloatExtra(AddEditNoteActivity.EXTRA_BE,1);
+
+            Note note=new Note(title,description,priority,blutzucker,be);
             note.setId(id);
             noteViewModel.update(note);
             Toast.makeText(this, "Note updated", Toast.LENGTH_SHORT).show();

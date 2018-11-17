@@ -12,16 +12,25 @@ import android.widget.Toast;
 
 public class AddEditNoteActivity extends AppCompatActivity {
 
-    public static final String EXTRA_ID ="com.karstenfischer.room.roomdatabasegithubtest.EXTRA_ID";
-    public static final String EXTRA_TITLE ="com.karstenfischer.room.roomdatabasegithubtest.EXTRA_TITLE";
-    public static final String EXTRA_DESCRIPTION ="com.karstenfischer.room.roomdatabasegithubtest.EXTRA_DECRIPTION";
-    public static final String EXTRA_PRIORITY ="com.karstenfischer.room.roomdatabasegithubtest.EXTRA_PRIORITY";
+    public static final String EXTRA_ID = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_ID";
+    public static final String EXTRA_TITLE = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_TITLE";
+    public static final String EXTRA_DESCRIPTION = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_DECRIPTION";
+    public static final String EXTRA_PRIORITY = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_PRIORITY";
 
+    public static final String EXTRA_BLUTZUCKER = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_BLUTZUCKER";
+    public static final String EXTRA_BE = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_BE";
 
 
     private EditText etTitle;
     private EditText etDescription;
     private NumberPicker npPriority;
+
+    private EditText etBlutzucker;
+    private EditText etBe;
+
+    int blutzuckerHint;
+    float beHint;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,46 +41,78 @@ public class AddEditNoteActivity extends AppCompatActivity {
         etDescription = findViewById(R.id.etDescription);
         npPriority = findViewById(R.id.npPriority);
 
+        etBlutzucker = findViewById(R.id.etBlutzucker);
+        etBe = findViewById(R.id.etBe);
+
         npPriority.setMinValue(1);
         npPriority.setMaxValue(10);
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
 
-        Intent intent=getIntent();
-        if(intent.hasExtra(EXTRA_ID)){
+        Intent intent = getIntent();
+
+
+        if (intent.hasExtra(EXTRA_ID)) {
             setTitle("Edit Note");
             etTitle.setText(intent.getStringExtra(EXTRA_TITLE));
             etDescription.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
-            npPriority.setValue(intent.getIntExtra(EXTRA_PRIORITY,1));
-        }
-        else {
+            npPriority.setValue(intent.getIntExtra(EXTRA_PRIORITY, 1));
+
+
+            blutzuckerHint = intent.getIntExtra(EXTRA_BLUTZUCKER, 0);
+            etBlutzucker.setHint(String.valueOf(blutzuckerHint));
+
+            beHint = intent.getFloatExtra(EXTRA_BE, 0);
+            etBe.setHint(String.valueOf(beHint));
+
+
+        } else {
             setTitle("Add Note");
         }
 
 
-
     }
 
-    private void saveNote(){
-        String title=etTitle.getText().toString();
-        String descrition=etDescription.getText().toString();
-        int priority=npPriority.getValue();
+    private void saveNote() {
+        String title = etTitle.getText().toString();
+        String descrition = etDescription.getText().toString();
+        int priority = npPriority.getValue();
+        int blutzucker;
+        float be;
 
-        if(title.trim().isEmpty()||descrition.trim().isEmpty()){
-            Toast.makeText(this, "Please insert title and description", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Intent data=new Intent();
-        data.putExtra(EXTRA_TITLE,title);
-        data.putExtra(EXTRA_DESCRIPTION,descrition);
-        data.putExtra(EXTRA_PRIORITY,priority);
-
-        int id=getIntent().getIntExtra(EXTRA_ID,-1);
-        if(id!=-1){
-            data.putExtra(EXTRA_ID,id);
+        if (etBlutzucker.getText().toString().isEmpty()) {
+            blutzucker = blutzuckerHint;
+        } else {
+            blutzucker = Integer.parseInt(etBlutzucker.getText().toString());
         }
 
-        setResult(RESULT_OK,data);
+
+        if (etBe.getText().toString().isEmpty()) {
+            be = beHint;
+        } else {
+            be = Float.parseFloat(etBe.getText().toString());
+        }
+
+
+        //if(title.trim().isEmpty()||descrition.trim().isEmpty()){
+        //    Toast.makeText(this, "Please insert title and description", Toast.LENGTH_SHORT).show();
+        //    return;
+        //}
+
+        Intent data = new Intent();
+        data.putExtra(EXTRA_TITLE, title);
+        data.putExtra(EXTRA_DESCRIPTION, descrition);
+        data.putExtra(EXTRA_PRIORITY, priority);
+
+        data.putExtra(EXTRA_BLUTZUCKER, blutzucker);
+        data.putExtra(EXTRA_BE, be);
+
+        int id = getIntent().getIntExtra(EXTRA_ID, -1);
+        if (id != -1) {
+            data.putExtra(EXTRA_ID, id);
+        }
+
+        setResult(RESULT_OK, data);
         finish();
     }
 

@@ -13,11 +13,18 @@ public class Note {
     private String description;
     private int priority;
 
+    private int blutzucker;
+    private float be;
+
+
     //Constructor
-    public Note(String title, String description, int priority) {
+    public Note(String title, String description, int priority,int blutzucker,float be) {
         this.title = title;
         this.description = description;
         this.priority = priority;
+
+        this.blutzucker = blutzucker;
+        this.be = be;
     }
 
 
@@ -41,5 +48,13 @@ public class Note {
 
     public int getPriority() {
         return priority;
+    }
+
+    public int getBlutzucker() {
+        return blutzucker;
+    }
+
+    public float getBe() {
+        return be;
     }
 }
