@@ -19,9 +19,14 @@ public class Note {
     private float korrektur;
     private float basal;
 
+    private String datum;
+    private String uhrzeit;
+    private long currentTimeMillis;
+    private long eintragDatumMillis;
+
 
     //Constructor
-    public Note(String title, String description, int priority,int blutzucker,float be,float bolus,float korrektur,float basal) {
+    public Note(String title, String description, int priority,int blutzucker,float be,float bolus,float korrektur,float basal,String datum,String uhrzeit,long currentTimeMillis,long eintragDatumMillis) {
         this.title = title;
         this.description = description;
         this.priority = priority;
@@ -31,6 +36,12 @@ public class Note {
         this.bolus = bolus;
         this.korrektur = korrektur;
         this.basal = basal;
+
+        this.datum = datum;
+        this.uhrzeit = uhrzeit;
+        this.currentTimeMillis = currentTimeMillis;
+        this.eintragDatumMillis = eintragDatumMillis;
+
     }
 
 
@@ -74,5 +85,21 @@ public class Note {
 
     public float getBasal() {
         return basal;
+    }
+
+    public String getDatum() {
+        return datum;
+    }
+
+    public String getUhrzeit() {
+        return uhrzeit;
+    }
+
+    public long getCurrentTimeMillis() {
+        return currentTimeMillis;
+    }
+
+    public long getEintragDatumMillis() {
+        return eintragDatumMillis;
     }
 }

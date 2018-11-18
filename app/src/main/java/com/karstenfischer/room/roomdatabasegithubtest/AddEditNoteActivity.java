@@ -19,6 +19,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class AddEditNoteActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     public static final String EXTRA_ID = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_ID";
@@ -32,6 +37,10 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
     public static final String EXTRA_KORREKTUR = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_KORREKTUR";
     public static final String EXTRA_BASAL = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_BASAL";
 
+    public static final String EXTRA_DATUM = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_DATUM";
+    public static final String EXTRA_UHRZEIT = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_UHRZEIT";
+    public static final String EXTRA_CURRENT_TIME_MILLIS = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_CURRENT_TIME_MILLIS";
+    public static final String EXTRA_EINTRAG_DATUM_MILLIS = "com.karstenfischer.room.roomdatabasegithubtest.EXTRA_EINTRAG_DATUM_MILLIS";
 
     private EditText etTitle;
     private EditText etDescription;
@@ -48,17 +57,36 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
     private TextView tvCurrentTimeMillis;
     private TextView tveintragDatumMillis;
 
+    private String automatischOderManuell;
 
- private    int blutzuckerHint;
- private    float beHint;
-  private   float bolusHint;
-  private   float korrekturHint;
-  private   float basalHint;
 
-  private FloatingActionButton fabDate;
+    private String title;
+    private String description;
+    private int priority;
+
+    private int blutzucker;
+    private float be;
+    private float bolus;
+    private float korrektur;
+    private float basal;
+
+
+    private int blutzuckerHint;
+    private float beHint;
+    private float bolusHint;
+    private float korrekturHint;
+    private float basalHint;
+
+    private String datum;
+    private String uhrzeit;
+    private long currentTimeMillis;
+    private long eintragDatumMillis;
+
+    private FloatingActionButton fabDate;
     private FloatingActionButton fabTime;
 
-
+    private SimpleDateFormat simpleDateFormatDatum = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
+    private SimpleDateFormat simpleDateFormatUhrzeit = new SimpleDateFormat("HH:mm", Locale.GERMAN);
 
 
     @Override
@@ -82,12 +110,10 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
         fabDate = findViewById(R.id.fabDate);
         fabTime = findViewById(R.id.fabTime);
 
-        tvDatum= findViewById(R.id.tvDatum);
-        tvUhrzeit= findViewById(R.id.tvUhrzeit);
-        tvCurrentTimeMillis= findViewById(R.id.tvCurrentTimeMillis);
-        tveintragDatumMillis= findViewById(R.id.tvEintragDatumMillis);
-
-
+        tvDatum = findViewById(R.id.tvDatum);
+        tvUhrzeit = findViewById(R.id.tvUhrzeit);
+        tvCurrentTimeMillis = findViewById(R.id.tvCurrentTimeMillis);
+        tveintragDatumMillis = findViewById(R.id.tvEintragDatumMillis);
 
 
         npPriority.setMinValue(1);
@@ -111,12 +137,15 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
             }
         });
 
+        //datum = simpleDateFormatDatum.format(new Date());
+        //uhrzeit = simpleDateFormatUhrzeit.format(new Date());
 
 
         Intent intent = getIntent();
 
 
         if (intent.hasExtra(EXTRA_ID)) {
+            automatischOderManuell = "manuell";
             setTitle("Edit Note");
             etTitle.setText(intent.getStringExtra(EXTRA_TITLE));
             etDescription.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
@@ -144,26 +173,45 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
             etBasal.setHint(String.valueOf(basalHint));
             etBasal.setHintTextColor(getResources().getColor(R.color.schriftGrauHell));
 
+            tvDatum.setText(intent.getStringExtra(EXTRA_DATUM));
+            tvUhrzeit.setText(intent.getStringExtra(EXTRA_UHRZEIT));
+            currentTimeMillis = intent.getLongExtra(EXTRA_CURRENT_TIME_MILLIS, 0);
+            eintragDatumMillis = intent.getLongExtra(EXTRA_EINTRAG_DATUM_MILLIS, 0);
+
 
         } else {
-            setTitle("Add Note");
+            //Neuer Eintrag
+            automatischOderManuell = "automatisch";
+            TTS.speak("intent automatisch");
+            setTitle("Neuer Eintrag");
+
+            datum = simpleDateFormatDatum.format(new Date());
+            uhrzeit = simpleDateFormatUhrzeit.format(new Date());
+
+            tvDatum.setText(datum);
+            tvUhrzeit.setText(uhrzeit);
         }
+        //ENDE Neuer Eintrag
     }
 
 
-
-
-
+    //Eintrag ist fertig und wird gespeichert
     private void saveNote() {
-        String title = etTitle.getText().toString();
-        String descrition = etDescription.getText().toString();
-        int priority = npPriority.getValue();
+        title = etTitle.getText().toString();
+        description = etDescription.getText().toString();
+        priority = npPriority.getValue();
+/*
         int blutzucker;
         float be;
         float bolus;
         float korrektur;
         float basal;
 
+        String datum;
+        String uhrzeit;
+        long currentTimeMillis;
+        long eintragDatumMillis;
+*/
 
         if (etBlutzucker.getText().toString().isEmpty()) {
             blutzucker = blutzuckerHint;
@@ -199,6 +247,12 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
             basal = Float.parseFloat(etBasal.getText().toString());
         }
 
+        title = etTitle.getText().toString();
+        description = etDescription.getText().toString();
+
+        datum = tvDatum.getText().toString();
+        uhrzeit = tvUhrzeit.getText().toString();
+
 
         //if(title.trim().isEmpty()||descrition.trim().isEmpty()){
         //    Toast.makeText(this, "Please insert title and description", Toast.LENGTH_SHORT).show();
@@ -206,8 +260,65 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
         //}
 
         Intent data = new Intent();
+
+        //Datum, Uhrzeit, currentTimeMillis, eintragDatumMillis ermitteln
+        //simpleDateFormatDatum = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
+        //simpleDateFormatUhrzeit = new SimpleDateFormat("HH:mm", Locale.GERMAN);
+
+        //Datum und Uhrzeit wurden nicht verändert: AUTOMATISCH)
+        if (automatischOderManuell.equals("automatisch")) {
+            //TTS.speak("das ist gut. automatic");
+            datum = simpleDateFormatDatum.format(new Date());
+            uhrzeit = simpleDateFormatUhrzeit.format(new Date());
+            currentTimeMillis = System.currentTimeMillis();
+            //aufpasser=0;  todo
+        }
+        //ENDE Datum und Uhrzeit wurden nicht verändert: AUTOMATISCH)
+
+
+        else {
+
+            datum = tvDatum.getText().toString();
+            uhrzeit = tvUhrzeit.getText().toString();
+            //TTS.speak("jajaja"+uhrzeit);
+
+            String datumUndUhrzeit = datum + "-" + uhrzeit+":00";
+            //uhrzeitUndSekunde = uhrzeit + ":00";
+            //String datumUndUhrzeit = datum + "-" + uhrzeitUndSekunde;
+
+
+
+
+
+            //SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+            //SharedPreferences.Editor editor;
+            //editor = sharedPreferences.edit();
+            //editor.putString("lolo", "what what what");
+            //editor.putString("uhrzeit", uhrzeit);
+            //editor.apply();
+
+            SimpleDateFormat duu = new SimpleDateFormat("dd.MM.yyyy-HH:mm:ss", Locale.GERMAN);
+            try {
+                Date startDate = duu.parse(datumUndUhrzeit);
+                currentTimeMillis = startDate != null ? startDate.getTime() : 0;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        //ENDE  Datum und-oder Uhrzeit wurden verändert (MANUELL)
+
+
+        Date startDate;
+        try {
+            startDate = simpleDateFormatDatum.parse(datum);
+            eintragDatumMillis = startDate != null ? startDate.getTime() : 0;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //Datum, Uhrzeit, currentTimeMillis, eintragDatumMillis ermitteln
+
         data.putExtra(EXTRA_TITLE, title);
-        data.putExtra(EXTRA_DESCRIPTION, descrition);
+        data.putExtra(EXTRA_DESCRIPTION, description);
         data.putExtra(EXTRA_PRIORITY, priority);
 
         data.putExtra(EXTRA_BLUTZUCKER, blutzucker);
@@ -215,6 +326,11 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
         data.putExtra(EXTRA_BOLUS, bolus);
         data.putExtra(EXTRA_KORREKTUR, korrektur);
         data.putExtra(EXTRA_BASAL, basal);
+
+        data.putExtra(EXTRA_DATUM, datum);
+        data.putExtra(EXTRA_UHRZEIT, uhrzeit);
+        data.putExtra(EXTRA_CURRENT_TIME_MILLIS, currentTimeMillis);
+        data.putExtra(EXTRA_EINTRAG_DATUM_MILLIS, eintragDatumMillis);
 
         int id = getIntent().getIntExtra(EXTRA_ID, -1);
         if (id != -1) {
@@ -249,9 +365,9 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         SharedPreferences.Editor editor;
         editor = sharedPreferences.edit();
-        //todo datum = tvDatum.getText().toString();
+        datum = tvDatum.getText().toString();
         //uhrzeit=tvUhrzeit.getText().toString();
-        //todo editor.putString("datum", datum);
+        editor.putString("datum", datum);
 
         //TTS.speak("date 1 is" + datum);
         editor.apply();
@@ -263,19 +379,34 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
         datePicker.show(getSupportFragmentManager(), "date picker");
     }
 
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        //Calendar c = Calendar.getInstance();
+        //c.set(Calendar.YEAR, year);
+        //c.set(Calendar.MONTH, month);
+        //c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        //String datumLang = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
+        //Aktuelles Datum
+        //datum = DateFormat.getDateInstance().format(c.getTime());
+
+        //Dasselbe Datum anzeigen!!!
+        datum = dayOfMonth + "." + (month + 1) + "." + year;
+        tvDatum.setText(datum);
+    }
+
     private void UhrzeitEingeben() {
         DialogFragment timePicker = new TimeFragment();
         //TTS.speak("time picker");
-        //todo automatischOderManuell = "manuell";
+         automatischOderManuell = "manuell";
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         SharedPreferences.Editor editor;
         editor = sharedPreferences.edit();
-        //todo editor.putString("automatischOderManuell", automatischOderManuell);
+         editor.putString("automatischOderManuell", automatischOderManuell);
         //datum=tvDatum.getText().toString();
-        //todo uhrzeit = tvUhrzeit.getText().toString();
+         uhrzeit = tvUhrzeit.getText().toString();
 
         //editor.putString("datum", datum);
-        //todo editor.putString("uhrzeit", uhrzeit);
+         editor.putString("uhrzeit", uhrzeit);
         //TTS.speak("clock button is" + uhrzeit);
         editor.apply();
 
@@ -289,21 +420,6 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
         timePicker.show(getSupportFragmentManager(), "time picker");
     }
 
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        //Calendar c = Calendar.getInstance();
-        //c.set(Calendar.YEAR, year);
-        //c.set(Calendar.MONTH, month);
-        //c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        //String datumLang = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
-        //Aktuelles Datum
-        //datum = DateFormat.getDateInstance().format(c.getTime());
-
-        //Dasselbe Datum anzeigen!!!
-        //todo datum = dayOfMonth + "." + (month + 1) + "." + year;
-        //todo tvDatum.setText(datum);
-    }
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -322,8 +438,8 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
         }
         //todo uhrzeitUndSekunde = stundeString + ":" + minuteString + ":00";
         //Aktuelle Uhrzeit
-        //todo uhrzeit = stundeString + ":" + minuteString;
+         uhrzeit = stundeString + ":" + minuteString;
         //TTS.speak("Die uhr sagt"+uhrzeit);
-        //todo tvUhrzeit.setText(uhrzeit);
+         tvUhrzeit.setText(uhrzeit);
     }
 }

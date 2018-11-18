@@ -39,7 +39,12 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
                     oldItem.getBe() == newItem.getBe() &&
                     oldItem.getBolus() == newItem.getBolus() &&
                     oldItem.getKorrektur() == newItem.getKorrektur() &&
-                    oldItem.getBasal() == newItem.getBasal();
+                    oldItem.getBasal() == newItem.getBasal()&&
+
+                    oldItem.getDatum() == newItem.getDatum() &&
+                    oldItem.getUhrzeit() == newItem.getUhrzeit() &&
+                    oldItem.getCurrentTimeMillis() == newItem.getCurrentTimeMillis() &&
+                    oldItem.getEintragDatumMillis() == newItem.getEintragDatumMillis() ;
         }
     };
 
@@ -63,6 +68,13 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
         noteHolder.tvBolus.setText(String.valueOf(currentNote.getBolus()));
         noteHolder.tvKorrektur.setText(String.valueOf(currentNote.getKorrektur()));
         noteHolder.tvBasal.setText(String.valueOf(currentNote.getBasal()));
+
+        noteHolder.tvDatum.setText(String.valueOf(currentNote.getDatum()));
+        noteHolder.tvUhrzeit.setText(String.valueOf(currentNote.getUhrzeit()));
+        noteHolder.tvCurrentTimeMillis.setText(String.valueOf(currentNote.getCurrentTimeMillis()));
+        noteHolder.tveintragDatumMillis.setText(String.valueOf(currentNote.getEintragDatumMillis()));
+
+
     }
 
     //Für onSwipe
@@ -81,6 +93,11 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
         private TextView tvKorrektur;
         private TextView tvBasal;
 
+        private TextView tvDatum;
+        private TextView tvUhrzeit;
+        private TextView tvCurrentTimeMillis;
+        private TextView tveintragDatumMillis;
+
         public NoteHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
@@ -92,6 +109,11 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
             tvBolus = itemView.findViewById(R.id.tvBolus);
             tvKorrektur = itemView.findViewById(R.id.tvKorrektur);
             tvBasal = itemView.findViewById(R.id.tvBasal);
+
+            tvDatum = itemView.findViewById(R.id.tvDatum);
+            tvUhrzeit = itemView.findViewById(R.id.tvUhrzeit);
+            tvCurrentTimeMillis = itemView.findViewById(R.id.tvCurrentTimeMillis);
+            tveintragDatumMillis = itemView.findViewById(R.id.tvEintragDatumMillis);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

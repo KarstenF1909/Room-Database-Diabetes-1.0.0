@@ -90,6 +90,12 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(AddEditNoteActivity.EXTRA_KORREKTUR,note.getKorrektur());
                 intent.putExtra(AddEditNoteActivity.EXTRA_BASAL,note.getBasal());
 
+                intent.putExtra(AddEditNoteActivity.EXTRA_DATUM,note.getDatum());
+                intent.putExtra(AddEditNoteActivity.EXTRA_UHRZEIT,note.getUhrzeit());
+                intent.putExtra(AddEditNoteActivity.EXTRA_CURRENT_TIME_MILLIS,note.getCurrentTimeMillis());
+                intent.putExtra(AddEditNoteActivity.EXTRA_EINTRAG_DATUM_MILLIS,note.getEintragDatumMillis());
+
+
                 startActivityForResult(intent,EDIT_NOTE_REQUEST);
             }
         });
@@ -110,7 +116,13 @@ public class MainActivity extends AppCompatActivity {
             float korrektur=data.getFloatExtra(AddEditNoteActivity.EXTRA_KORREKTUR,1);
             float basal=data.getFloatExtra(AddEditNoteActivity.EXTRA_BASAL,1);
 
-            Note note =new Note(title,description,priority,blutzucker,be,bolus,korrektur,basal);
+            String datum=data.getStringExtra(AddEditNoteActivity.EXTRA_DATUM);
+            String uhrzeit=data.getStringExtra(AddEditNoteActivity.EXTRA_UHRZEIT);
+            long currentTimeMillis=data.getLongExtra(AddEditNoteActivity.EXTRA_CURRENT_TIME_MILLIS,0);
+            long eintragDatumMillis=data.getLongExtra(AddEditNoteActivity.EXTRA_EINTRAG_DATUM_MILLIS,0);
+
+
+            Note note =new Note(title,description,priority,blutzucker,be,bolus,korrektur,basal,datum,uhrzeit,currentTimeMillis,eintragDatumMillis);
             noteViewModel.insert(note);
             Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
         }
@@ -131,7 +143,12 @@ public class MainActivity extends AppCompatActivity {
             float korrektur=data.getFloatExtra(AddEditNoteActivity.EXTRA_KORREKTUR,1);
             float basal=data.getFloatExtra(AddEditNoteActivity.EXTRA_BASAL,1);
 
-            Note note=new Note(title,description,priority,blutzucker,be,bolus,korrektur,basal);
+            String datum=data.getStringExtra(AddEditNoteActivity.EXTRA_DATUM);
+            String uhrzeit=data.getStringExtra(AddEditNoteActivity.EXTRA_UHRZEIT);
+            long currentTimeMillis=data.getLongExtra(AddEditNoteActivity.EXTRA_CURRENT_TIME_MILLIS,0);
+            long eintragDatumMillis=data.getLongExtra(AddEditNoteActivity.EXTRA_EINTRAG_DATUM_MILLIS,0);
+
+            Note note=new Note(title,description,priority,blutzucker,be,bolus,korrektur,basal,datum,uhrzeit,currentTimeMillis,eintragDatumMillis);
             note.setId(id);
             noteViewModel.update(note);
             Toast.makeText(this, "Note updated", Toast.LENGTH_SHORT).show();
