@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/backgroundcolor"
     tools:context=".MainActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="487dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/note_item"/>
+        tools:listitem="@layout/note_item" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabAdd"
@@ -21,5 +22,20 @@
         android:src="@drawable/ic_add"
         android:layout_gravity="bottom|end"
         android:layout_margin="32dp"/>
+<android.support.v7.widget.CardView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|start"
+    android:backgroundTint="@color/colorAccent"
+    android:elevation="8dp"
+    app:cardCornerRadius="8dp"
+    android:layout_margin="28dp"
+    >
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="103dp"
+        android:layout_height="57dp"
+        app:srcCompat="@drawable/logo_betty_01" />
+</android.support.v7.widget.CardView>
 </android.support.design.widget.CoordinatorLayout>

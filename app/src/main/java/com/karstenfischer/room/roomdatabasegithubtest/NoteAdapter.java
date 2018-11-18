@@ -1,12 +1,16 @@
 package com.karstenfischer.room.roomdatabasegithubtest;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.recyclerview.extensions.ListAdapter;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -39,48 +43,14 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
                     oldItem.getBe() == newItem.getBe() &&
                     oldItem.getBolus() == newItem.getBolus() &&
                     oldItem.getKorrektur() == newItem.getKorrektur() &&
-                    oldItem.getBasal() == newItem.getBasal()&&
+                    oldItem.getBasal() == newItem.getBasal() &&
 
                     oldItem.getDatum() == newItem.getDatum() &&
                     oldItem.getUhrzeit() == newItem.getUhrzeit() &&
                     oldItem.getCurrentTimeMillis() == newItem.getCurrentTimeMillis() &&
-                    oldItem.getEintragDatumMillis() == newItem.getEintragDatumMillis() ;
+                    oldItem.getEintragDatumMillis() == newItem.getEintragDatumMillis();
         }
     };
-
-    @NonNull
-    @Override
-    public NoteHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.note_item, viewGroup, false);
-        return new NoteHolder(itemView);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull NoteHolder noteHolder, int position) {
-        Note currentNote = getItem(position);
-        noteHolder.tvTitle.setText(currentNote.getTitle());
-        noteHolder.tvDescription.setText(currentNote.getDescription());
-        noteHolder.tvPriority.setText(String.valueOf(currentNote.getPriority()));
-
-        noteHolder.tvBlutzucker.setText(String.valueOf(currentNote.getBlutzucker()));
-        noteHolder.tvBe.setText(String.valueOf(currentNote.getBe()));
-        noteHolder.tvBolus.setText(String.valueOf(currentNote.getBolus()));
-        noteHolder.tvKorrektur.setText(String.valueOf(currentNote.getKorrektur()));
-        noteHolder.tvBasal.setText(String.valueOf(currentNote.getBasal()));
-
-        noteHolder.tvDatum.setText(String.valueOf(currentNote.getDatum()));
-        noteHolder.tvUhrzeit.setText(String.valueOf(currentNote.getUhrzeit()));
-        noteHolder.tvCurrentTimeMillis.setText(String.valueOf(currentNote.getCurrentTimeMillis()));
-        noteHolder.tveintragDatumMillis.setText(String.valueOf(currentNote.getEintragDatumMillis()));
-
-
-    }
-
-    //Für onSwipe
-    public Note getNoteAt(int position) {
-        return getItem(position);
-    }
 
     class NoteHolder extends RecyclerView.ViewHolder {
         private TextView tvTitle;
@@ -93,10 +63,20 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
         private TextView tvKorrektur;
         private TextView tvBasal;
 
+        private TextView tvBlutzuckerHeader;
+        private TextView tvBeHeader;
+        private TextView tvBolusHeader;
+        private TextView tvKorrekturHeader;
+        private TextView tvBasalHeader;
+
+
+
         private TextView tvDatum;
         private TextView tvUhrzeit;
         private TextView tvCurrentTimeMillis;
         private TextView tveintragDatumMillis;
+
+        private ImageView ivEmoji;
 
         public NoteHolder(@NonNull View itemView) {
             super(itemView);
@@ -110,10 +90,19 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
             tvKorrektur = itemView.findViewById(R.id.tvKorrektur);
             tvBasal = itemView.findViewById(R.id.tvBasal);
 
+
+            tvBlutzuckerHeader = itemView.findViewById(R.id.tvBlutzuckerHeader);
+            tvBeHeader = itemView.findViewById(R.id.tvBeHeader);
+            tvBolusHeader = itemView.findViewById(R.id.tvBolusHeader);
+            tvKorrekturHeader = itemView.findViewById(R.id.tvKorrekturHeader);
+            tvBasalHeader = itemView.findViewById(R.id.tvBasalHeader);
+
             tvDatum = itemView.findViewById(R.id.tvDatum);
             tvUhrzeit = itemView.findViewById(R.id.tvUhrzeit);
             tvCurrentTimeMillis = itemView.findViewById(R.id.tvCurrentTimeMillis);
             tveintragDatumMillis = itemView.findViewById(R.id.tvEintragDatumMillis);
+
+            ivEmoji= itemView.findViewById(R.id.ivEmoji);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -128,6 +117,159 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
 
         }
     }
+
+    @NonNull
+    @Override
+    public NoteHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View itemView = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.note_item, viewGroup, false);
+        return new NoteHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull NoteHolder noteHolder, int position) {
+        Note currentNote = getItem(position);
+        noteHolder.tvTitle.setText(currentNote.getTitle());
+        //noteHolder.tvDescription.setText(currentNote.getDescription());
+        noteHolder.tvPriority.setText(String.valueOf(currentNote.getPriority()));
+
+
+        if (currentNote.getTitle().isEmpty()) {
+            noteHolder.tvTitle.setVisibility(View.GONE);
+            noteHolder.tvTitle.setText(String.valueOf(currentNote.getTitle()));
+        } else {
+            noteHolder.tvTitle.setVisibility(View.VISIBLE);
+            noteHolder.tvTitle.setText(String.valueOf(currentNote.getTitle()));
+        }
+
+
+
+
+        if (currentNote.getDescription().isEmpty()) {
+            noteHolder.tvDescription.setVisibility(View.GONE);
+            //noteHolder.tvd.setVisibility(View.GONE);
+            noteHolder.tvDescription.setText(String.valueOf(currentNote.getDescription()));
+        } else {
+            noteHolder.tvDescription.setVisibility(View.VISIBLE);
+            //noteHolder.tvBeHeader.setVisibility(View.VISIBLE);
+            noteHolder.tvDescription.setText(String.valueOf(currentNote.getDescription()));
+        }
+
+
+        if (currentNote.getBlutzucker() == 0) {
+            //noteHolder.tvBlutzucker.setVisibility(View.GONE);
+            //noteHolder.tvBlutzuckerHeader.setVisibility(View.GONE);
+            noteHolder.tvBlutzucker.setText(" -- ");
+        } else {
+            noteHolder.tvBlutzucker.setVisibility(View.VISIBLE);
+            noteHolder.tvBlutzuckerHeader.setVisibility(View.VISIBLE);
+            noteHolder.tvBlutzucker.setText(String.valueOf(currentNote.getBlutzucker()));
+        }
+
+
+
+        if (currentNote.getBe() == 0) {
+            noteHolder.tvBe.setVisibility(View.GONE);
+            noteHolder.tvBeHeader.setVisibility(View.GONE);
+            noteHolder.tvBe.setText(String.valueOf(currentNote.getBe()));
+        } else {
+            noteHolder.tvBe.setVisibility(View.VISIBLE);
+            noteHolder.tvBeHeader.setVisibility(View.VISIBLE);
+            noteHolder.tvBe.setText(String.valueOf(currentNote.getBe()));
+        }
+
+
+
+
+
+
+
+        if (currentNote.getBolus() == 0) {
+            noteHolder.tvBolus.setVisibility(View.GONE);
+            noteHolder.tvBolusHeader.setVisibility(View.GONE);
+            noteHolder.tvBolus.setText(String.valueOf(currentNote.getBolus()));
+        } else {
+            noteHolder.tvBolus.setVisibility(View.VISIBLE);
+            noteHolder.tvBolusHeader.setVisibility(View.VISIBLE);
+            noteHolder.tvBolus.setText(String.valueOf(currentNote.getBolus()));
+        }
+
+        if (currentNote.getKorrektur() == 0) {
+            //noteHolder.tvKorrektur.setTextSize(5f);
+            //noteHolder.tvKorrekturHeader.setTextSize(5f);
+            //noteHolder.tvKorrektur.setTextSize(currentNote.getKorrektur());
+            //noteHolder.tvKorrekturHeader.setTextSize(currentNote.getKorrektur());
+            noteHolder.tvKorrektur.setVisibility(View.GONE);
+            noteHolder.tvKorrekturHeader.setVisibility(View.GONE);
+            noteHolder.tvKorrektur.setText(String.valueOf(currentNote.getKorrektur()));
+            //int currentNoteL= (int) currentNote.getKorrektur();
+
+            //ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            //params.setMargins(currentNoteL,currentNoteL,currentNoteL,currentNoteL);
+            //noteHolder.tvKorrektur.setLayoutParams(params);
+            //noteHolder.tvKorrekturHeader.setLayoutParams(params);
+            //noteHolder.tvKorrektur.setText(String.valueOf(currentNote.getKorrektur()));
+            //params.setMargins(0,18,0,0);
+
+            //noteHolder.tvKorrektur.setTextColor(Color.RED);
+        } else {
+            noteHolder.tvKorrektur.setVisibility(View.VISIBLE);
+            noteHolder.tvKorrekturHeader.setVisibility(View.VISIBLE);
+            noteHolder.tvKorrektur.setText(String.valueOf(currentNote.getKorrektur()));
+
+        }
+
+
+        //}
+        //noteHolder.tvKorrektur.setTextSize(12f);
+        //noteHolder.tvKorrekturHeader.setTextSize(12f);
+
+
+        //ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //params.setMargins(0,48,0,0);
+        //noteHolder.tvBasal.setLayoutParams(params);
+        //noteHolder.tvBasalHeader.setLayoutParams(params);
+
+        if (currentNote.getBasal() == 0) {
+            noteHolder.tvBasal.setVisibility(View.GONE);
+            noteHolder.tvBasalHeader.setVisibility(View.GONE);
+            noteHolder.tvBasal.setText(String.valueOf(currentNote.getBasal()));
+        } else {
+            noteHolder.tvBasal.setVisibility(View.VISIBLE);
+            noteHolder.tvBasalHeader.setVisibility(View.VISIBLE);
+            noteHolder.tvBasal.setText(String.valueOf(currentNote.getBasal()));
+        }
+
+
+        if(currentNote.getBlutzucker()<70){
+            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_blau_transparent);
+        }
+        if(currentNote.getBlutzucker()>69&&currentNote.getBlutzucker()<200){
+            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_happy_transparent);
+        }
+        if(currentNote.getBlutzucker()>199){
+            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_unhappy_transparent);
+        }
+
+
+
+
+
+        noteHolder.tvDatum.setText(String.valueOf(currentNote.getDatum()));
+        noteHolder.tvUhrzeit.setText(String.valueOf(currentNote.getUhrzeit()));
+        //noteHolder.tvCurrentTimeMillis.setText(String.valueOf(currentNote.getCurrentTimeMillis()));
+        //noteHolder.tveintragDatumMillis.setText(String.valueOf(currentNote.getEintragDatumMillis()));
+        noteHolder.tvCurrentTimeMillis.setText("Datum");
+        noteHolder.tveintragDatumMillis.setText("Uhrzeit");
+
+    }
+
+    //Für onSwipe
+    public Note getNoteAt(int position) {
+        return getItem(position);
+    }
+
+
 
     public interface OnItemClickListener {
         void onItemClick(Note note);
