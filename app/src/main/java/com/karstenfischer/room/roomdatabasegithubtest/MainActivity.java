@@ -23,6 +23,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,7 +47,15 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_neu);
+        setContentView(R.layout.activity_main_neu_neu);
+
+
+        android.support.v7.widget.Toolbar toolbar=findViewById(R.id.toolbar);
+
+        if (toolbar != null) { setSupportActionBar(toolbar);}
+
+        // setSupportActionBar(toolbar);
+
 
         myFont = Typeface.createFromAsset(this.getAssets(), "font/Oswald-Regular.ttf");
         coordinatorLayout=findViewById(R.id.coordinatorLayout);

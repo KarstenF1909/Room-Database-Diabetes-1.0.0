@@ -143,7 +143,7 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
 
         if (intent.hasExtra(EXTRA_ID)) {
             automatischOderManuell = "manuell";
-            setTitle("Edit Note");
+            setTitle("Eintrag ändern");
             etTitle.setText(intent.getStringExtra(EXTRA_TITLE));
             etDescription.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
             npPriority.setValue(intent.getIntExtra(EXTRA_PRIORITY, 1));
@@ -278,8 +278,8 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
 
         else {
 
-            //datum = tvDatum.getText().toString();
-            //uhrzeit = tvUhrzeit.getText().toString();
+            datum = tvDatum.getText().toString();
+            uhrzeit = tvUhrzeit.getText().toString();
             //TTS.speak("jajaja"+uhrzeit);
 
             String datumUndUhrzeit = datum + "-" + uhrzeit+":00";
@@ -360,6 +360,7 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
     }
 
     private void DatumEingeben() {
+        TTS.speak("date picker");
         DialogFragment datePicker = new DateFragment();
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
@@ -390,13 +391,13 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
         //datum = DateFormat.getDateInstance().format(c.getTime());
 
         //Dasselbe Datum anzeigen!!!
-        datum = dayOfMonth + "." + (month + 1) + "." + year;
+        datum = dayOfMonth + "." + (month +1) + "." + year;
         tvDatum.setText(datum);
     }
 
     private void UhrzeitEingeben() {
         DialogFragment timePicker = new TimeFragment();
-        //TTS.speak("time picker");
+        TTS.speak("time picker");
          automatischOderManuell = "manuell";
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         SharedPreferences.Editor editor;

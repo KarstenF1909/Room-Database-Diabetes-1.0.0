@@ -8,6 +8,7 @@
     android:padding="16dp"
     tools:context=".AddEditNoteActivity">
 
+
     <EditText
         android:id="@+id/etTitle"
         android:layout_width="match_parent"
@@ -23,7 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fabDate" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView3" />
 
     <EditText
         android:id="@+id/etDescription"
@@ -141,70 +142,106 @@
         app:layout_constraintStart_toStartOf="@+id/etKorrektur"
         app:layout_constraintTop_toBottomOf="@+id/etKorrektur" />
 
-    <TextView
-        android:id="@+id/tvCurrentTimeMillis"
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="4dp"
-        android:text="Datum"
-        android:textColor="?attr/textcolor1"
+
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:cardCornerRadius="4dp"
+        android:backgroundTint="?attr/cardbackground2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/tvEintragDatumMillis"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
-        android:text="Uhrzeit"
-        android:textColor="?attr/textcolor1"
-        app:layout_constraintBottom_toBottomOf="@+id/tvCurrentTimeMillis"
-        app:layout_constraintStart_toEndOf="@+id/tvCurrentTimeMillis"
-        app:layout_constraintTop_toTopOf="@+id/tvCurrentTimeMillis"
-        app:layout_constraintVertical_bias="0.0" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp">
 
-    <TextView
-        android:id="@+id/tvDatum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textColor="?attr/textcolor1"
-        app:layout_constraintEnd_toEndOf="@+id/tvCurrentTimeMillis"
-        app:layout_constraintStart_toStartOf="@+id/tvCurrentTimeMillis"
-        app:layout_constraintTop_toBottomOf="@+id/tvCurrentTimeMillis" />
+            <TextView
+                android:id="@+id/tvCurrentTimeMillis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="4dp"
+                android:text="Datum"
+                android:textColor="?attr/textcolor1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvUhrzeit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textColor="?attr/textcolor1"
-        app:layout_constraintEnd_toEndOf="@+id/tvEintragDatumMillis"
-        app:layout_constraintStart_toStartOf="@+id/tvEintragDatumMillis"
-        app:layout_constraintTop_toTopOf="@+id/tvDatum" />
+            <TextView
+                android:id="@+id/tvEintragDatumMillis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="120dp"
+                android:layout_marginEnd="32dp"
+                android:text="Uhrzeit"
+                android:textColor="?attr/textcolor1"
+                app:layout_constraintBottom_toBottomOf="@+id/tvCurrentTimeMillis"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tvCurrentTimeMillis"
+                app:layout_constraintTop_toTopOf="@+id/tvCurrentTimeMillis"
+                app:layout_constraintVertical_bias="0.0" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:clickable="true"
-        app:layout_constraintEnd_toEndOf="@+id/tvDatum"
-        app:layout_constraintStart_toStartOf="@+id/tvDatum"
-        app:layout_constraintTop_toBottomOf="@+id/tvDatum"
-        app:srcCompat="@drawable/ic_date_range_black_24dp" />
+            <TextView
+                android:id="@+id/tvDatum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="?attr/textcolor1"
+                app:layout_constraintEnd_toEndOf="@+id/tvCurrentTimeMillis"
+                app:layout_constraintStart_toStartOf="@+id/tvCurrentTimeMillis"
+                app:layout_constraintTop_toBottomOf="@+id/tvCurrentTimeMillis" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:clickable="true"
-        app:layout_constraintEnd_toEndOf="@+id/tvUhrzeit"
-        app:layout_constraintStart_toStartOf="@+id/tvUhrzeit"
-        app:layout_constraintTop_toBottomOf="@+id/tvUhrzeit"
-        app:srcCompat="@drawable/ic_access_time_black_24dp" />
+            <TextView
+                android:id="@+id/tvUhrzeit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="?attr/textcolor1"
+                app:layout_constraintEnd_toEndOf="@+id/tvEintragDatumMillis"
+                app:layout_constraintStart_toStartOf="@+id/tvEintragDatumMillis"
+                app:layout_constraintTop_toTopOf="@+id/tvDatum" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                app:layout_constraintEnd_toEndOf="@+id/tvDatum"
+                app:layout_constraintStart_toStartOf="@+id/tvDatum"
+                app:layout_constraintTop_toBottomOf="@+id/tvDatum"
+                app:srcCompat="@drawable/ic_date_range_black_24dp" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                app:layout_constraintEnd_toEndOf="@+id/tvUhrzeit"
+                app:layout_constraintStart_toStartOf="@+id/tvUhrzeit"
+                app:layout_constraintTop_toBottomOf="@+id/tvUhrzeit"
+                app:srcCompat="@drawable/ic_access_time_black_24dp" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+
+
+
+
+
+
+
 
     <TextView
         android:id="@+id/textView5"

@@ -215,13 +215,13 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
 
 
         if(currentNote.getBlutzucker()<70){
-            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_blau);
+            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_blau_transparent);
         }
         if(currentNote.getBlutzucker()>69&&currentNote.getBlutzucker()<200){
-            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_happy);
+            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_happy_transparent);
         }
         if(currentNote.getBlutzucker()>199){
-            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_unhappy);
+            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_unhappy_transparent);
         }
 
 

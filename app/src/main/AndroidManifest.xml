@@ -16,7 +16,7 @@
             android:launchMode="singleTop"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/lightpinktheme">
+            android:theme="@style/duestertheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -29,7 +29,7 @@
         <activity android:name=".AddEditNoteActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/greentheme"
+            android:theme="@style/duesterAddEdittheme"
             android:parentActivityName=".MainActivity"/>
     </application>
 
