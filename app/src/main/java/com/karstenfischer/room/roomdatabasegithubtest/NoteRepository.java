@@ -3,6 +3,9 @@ package com.karstenfischer.room.roomdatabasegithubtest;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 
 import java.util.List;
 
@@ -10,6 +13,8 @@ import java.util.List;
 public class NoteRepository {
     private NoteDao noteDao;
     private LiveData<List<Note>> allNotes;
+
+
 
     public NoteRepository(Application application) {
         NoteDatabase database = NoteDatabase.getInstance(application);
@@ -19,7 +24,6 @@ public class NoteRepository {
 
     public void insert(Note note) {
         new InsertNoteAsyncTask(noteDao).execute(note);
-
     }
 
     public void update(Note note) {
@@ -28,6 +32,8 @@ public class NoteRepository {
 
     public void delete(Note note) {
         new DeleteNoteAsyncTask(noteDao).execute(note);
+
+        //new InsertNoteAsyncTask(noteDao).execute(note);   todo: funktioniert besser als unten
     }
 
     public void deleteAllNotes() {
@@ -70,6 +76,8 @@ public class NoteRepository {
         @Override
         protected Void doInBackground(Note... notes) {
             noteDao.delete(notes[0]);
+
+            //noteDao.insert(notes[0]);   todo
             return null;
         }
     }

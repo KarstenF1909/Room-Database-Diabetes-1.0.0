@@ -3,9 +3,13 @@ package com.karstenfischer.room.roomdatabasegithubtest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,7 +31,13 @@ public class MainActivity extends AppCompatActivity {
 
     private NoteViewModel noteViewModel;
 
+    private Typeface myFont;
 
+    private CoordinatorLayout coordinatorLayout;
+
+    private Note note;
+    RecyclerView.ViewHolder viewHolder;
+    final NoteAdapter adapter=new NoteAdapter();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -36,7 +46,10 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_neu);
+
+        myFont = Typeface.createFromAsset(this.getAssets(), "font/Oswald-Regular.ttf");
+        coordinatorLayout=findViewById(R.id.coordinatorLayout);
 
         FloatingActionButton fabAdd=findViewById(R.id.fabAdd);
         fabAdd.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        final NoteAdapter adapter=new NoteAdapter();
+
         recyclerView.setAdapter(adapter);
 
         noteViewModel=ViewModelProviders.of(this).get(NoteViewModel.class);
@@ -75,12 +88,40 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+            //public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+            public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
                noteViewModel.delete(adapter.getNoteAt(viewHolder.getAdapterPosition()));
                 Toast.makeText(MainActivity.this, "Gelöscht", Toast.LENGTH_SHORT).show();
 
+                //final RecyclerView.ViewHolder vh=viewHolder;
+
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout,  " removed from cart!", Snackbar.LENGTH_LONG);
+                snackbar.setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        // undo is selected, restore the deleted item
+                        //mAdapter.restoreItem(deletedItem, deletedIndex);
+
+                    //TTS.speak("hier passiert noch gar nichts");
+
+
+                         noteViewModel.insert(adapter.getNoteAt(viewHolder.getAdapterPosition()));
+
+
+                    }
+                });
+                snackbar.setActionTextColor(Color.YELLOW);
+                snackbar.show();
+
+
+
+
             }
         }).attachToRecyclerView(recyclerView);
+
+
 
         adapter.setOnItemClickListener(new NoteAdapter.OnItemClickListener() {
             @Override
@@ -129,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             long eintragDatumMillis=data.getLongExtra(AddEditNoteActivity.EXTRA_EINTRAG_DATUM_MILLIS,0);
 
 
-            Note note =new Note(title,description,priority,blutzucker,be,bolus,korrektur,basal,datum,uhrzeit,currentTimeMillis,eintragDatumMillis);
+            note =new Note(title,description,priority,blutzucker,be,bolus,korrektur,basal,datum,uhrzeit,currentTimeMillis,eintragDatumMillis);
             noteViewModel.insert(note);
             Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
         }
@@ -183,5 +224,9 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    public   void hoo(){
+        noteViewModel.insert(adapter.getNoteAt(viewHolder.getAdapterPosition()));
     }
 }

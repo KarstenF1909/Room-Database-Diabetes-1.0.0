@@ -1,8 +1,7 @@
 package com.karstenfischer.room.roomdatabasegithubtest;
 
-import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.recyclerview.extensions.ListAdapter;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
@@ -10,18 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
 
-
     private OnItemClickListener listener;
 
-    public NoteAdapter() {
+    NoteAdapter() {
         super(DIFF_CALLBACK);
     }
 
@@ -45,8 +39,8 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
                     oldItem.getKorrektur() == newItem.getKorrektur() &&
                     oldItem.getBasal() == newItem.getBasal() &&
 
-                    oldItem.getDatum() == newItem.getDatum() &&
-                    oldItem.getUhrzeit() == newItem.getUhrzeit() &&
+                    oldItem.getDatum().equals(newItem.getDatum()) &&
+                    oldItem.getUhrzeit().equals(newItem.getUhrzeit()) &&
                     oldItem.getCurrentTimeMillis() == newItem.getCurrentTimeMillis() &&
                     oldItem.getEintragDatumMillis() == newItem.getEintragDatumMillis();
         }
@@ -69,8 +63,6 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
         private TextView tvKorrekturHeader;
         private TextView tvBasalHeader;
 
-
-
         private TextView tvDatum;
         private TextView tvUhrzeit;
         private TextView tvCurrentTimeMillis;
@@ -78,7 +70,9 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
 
         private ImageView ivEmoji;
 
-        public NoteHolder(@NonNull View itemView) {
+        private CoordinatorLayout coordinatorLayout;
+
+        NoteHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvDescription = itemView.findViewById(R.id.tvDescription);
@@ -89,7 +83,6 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
             tvBolus = itemView.findViewById(R.id.tvBolus);
             tvKorrektur = itemView.findViewById(R.id.tvKorrektur);
             tvBasal = itemView.findViewById(R.id.tvBasal);
-
 
             tvBlutzuckerHeader = itemView.findViewById(R.id.tvBlutzuckerHeader);
             tvBeHeader = itemView.findViewById(R.id.tvBeHeader);
@@ -104,6 +97,8 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
 
             ivEmoji= itemView.findViewById(R.id.ivEmoji);
 
+            coordinatorLayout=itemView.findViewById(R.id.coordinatorLayout);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -111,10 +106,8 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
                     if (listener != null && position != RecyclerView.NO_POSITION) {
                         listener.onItemClick(getItem(position));
                     }
-
                 }
             });
-
         }
     }
 
@@ -123,16 +116,16 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
     public NoteHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.note_item, viewGroup, false);
+
         return new NoteHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull NoteHolder noteHolder, int position) {
         Note currentNote = getItem(position);
-        noteHolder.tvTitle.setText(currentNote.getTitle());
-        //noteHolder.tvDescription.setText(currentNote.getDescription());
-        noteHolder.tvPriority.setText(String.valueOf(currentNote.getPriority()));
 
+        noteHolder.tvPriority.setVisibility(View.GONE);
+        noteHolder.tvPriority.setText(String.valueOf(currentNote.getPriority()));
 
         if (currentNote.getTitle().isEmpty()) {
             noteHolder.tvTitle.setVisibility(View.GONE);
@@ -143,15 +136,11 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
         }
 
 
-
-
         if (currentNote.getDescription().isEmpty()) {
             noteHolder.tvDescription.setVisibility(View.GONE);
-            //noteHolder.tvd.setVisibility(View.GONE);
             noteHolder.tvDescription.setText(String.valueOf(currentNote.getDescription()));
         } else {
             noteHolder.tvDescription.setVisibility(View.VISIBLE);
-            //noteHolder.tvBeHeader.setVisibility(View.VISIBLE);
             noteHolder.tvDescription.setText(String.valueOf(currentNote.getDescription()));
         }
 
@@ -167,7 +156,6 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
         }
 
 
-
         if (currentNote.getBe() == 0) {
             noteHolder.tvBe.setVisibility(View.GONE);
             noteHolder.tvBeHeader.setVisibility(View.GONE);
@@ -179,11 +167,6 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
         }
 
 
-
-
-
-
-
         if (currentNote.getBolus() == 0) {
             noteHolder.tvBolus.setVisibility(View.GONE);
             noteHolder.tvBolusHeader.setVisibility(View.GONE);
@@ -193,6 +176,7 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
             noteHolder.tvBolusHeader.setVisibility(View.VISIBLE);
             noteHolder.tvBolus.setText(String.valueOf(currentNote.getBolus()));
         }
+
 
         if (currentNote.getKorrektur() == 0) {
             //noteHolder.tvKorrektur.setTextSize(5f);
@@ -216,19 +200,8 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
             noteHolder.tvKorrektur.setVisibility(View.VISIBLE);
             noteHolder.tvKorrekturHeader.setVisibility(View.VISIBLE);
             noteHolder.tvKorrektur.setText(String.valueOf(currentNote.getKorrektur()));
-
         }
 
-
-        //}
-        //noteHolder.tvKorrektur.setTextSize(12f);
-        //noteHolder.tvKorrekturHeader.setTextSize(12f);
-
-
-        //ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        //params.setMargins(0,48,0,0);
-        //noteHolder.tvBasal.setLayoutParams(params);
-        //noteHolder.tvBasalHeader.setLayoutParams(params);
 
         if (currentNote.getBasal() == 0) {
             noteHolder.tvBasal.setVisibility(View.GONE);
@@ -242,17 +215,14 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
 
 
         if(currentNote.getBlutzucker()<70){
-            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_blau_transparent);
+            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_blau);
         }
         if(currentNote.getBlutzucker()>69&&currentNote.getBlutzucker()<200){
-            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_happy_transparent);
+            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_happy);
         }
         if(currentNote.getBlutzucker()>199){
-            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_unhappy_transparent);
+            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_unhappy);
         }
-
-
-
 
 
         noteHolder.tvDatum.setText(String.valueOf(currentNote.getDatum()));
@@ -265,18 +235,15 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
     }
 
     //Für onSwipe
-    public Note getNoteAt(int position) {
+    Note getNoteAt(int position) {
         return getItem(position);
     }
-
-
 
     public interface OnItemClickListener {
         void onItemClick(Note note);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
-
 }

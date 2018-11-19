@@ -65,11 +65,27 @@
         <item name="colorPrimary">#939393</item>
         <item name="colorPrimaryDark">#3e3e3e</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="backgroundcolor">#383838</item>
+        <item name="backgroundcolor">#e7e7e7</item>
         <item name="cardbackground1">#434343</item>
-        <item name="cardbackground2">#484848</item>
+        <item name="cardbackground2">#e4e4e4</item>
         <item name="textcolor1">#262626</item>
-        <item name="textcolor2">#cacaca</item>
+        <item name="textcolor2">#414141</item>
+        <item name="textcolor3">#b02b2b</item>
+        <item name="tintcolor">#ffffff</item>
+        <item name="buttoncolor">#c964fc</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+    </style>
+
+    <style name="lightpinktheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#e9caff</item>
+        <item name="colorPrimaryDark">#8b3b96</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="backgroundcolor">#ffffff</item>
+        <item name="cardbackground1">#434343</item>
+        <item name="cardbackground2">#fee1ff</item>
+        <item name="textcolor1">#262626</item>
+        <item name="textcolor2">#414141</item>
         <item name="textcolor3">#b02b2b</item>
         <item name="tintcolor">#ffffff</item>
         <item name="buttoncolor">#c964fc</item>

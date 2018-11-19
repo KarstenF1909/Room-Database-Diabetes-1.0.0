@@ -61,18 +61,6 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
 
     private String automatischOderManuell;
 
-
-    private String title;
-    private String description;
-    private int priority;
-
-    private int blutzucker;
-    private float be;
-    private float bolus;
-    private float korrektur;
-    private float basal;
-
-
     private int blutzuckerHint;
     private float beHint;
     private float bolusHint;
@@ -169,7 +157,6 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
             etBe.setHint(String.valueOf(beHint));
             etBe.setHintTextColor(getResources().getColor(R.color.schriftGrauHell));
 
-
             bolusHint = intent.getFloatExtra(EXTRA_BOLUS, 0);
             etBolus.setHint(String.valueOf(bolusHint));
             etBolus.setHintTextColor(getResources().getColor(R.color.schriftGrauHell));
@@ -206,9 +193,9 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
 
     //Eintrag ist fertig und wird gespeichert
     private void saveNote() {
-        title = etTitle.getText().toString();
-        description = etDescription.getText().toString();
-        priority = npPriority.getValue();
+        String title = etTitle.getText().toString();
+        String description = etDescription.getText().toString();
+        int priority = npPriority.getValue();
 /*
         int blutzucker;
         float be;
@@ -222,6 +209,7 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
         long eintragDatumMillis;
 */
 
+        int blutzucker;
         if (etBlutzucker.getText().toString().isEmpty()) {
             blutzucker = blutzuckerHint;
         } else {
@@ -229,6 +217,7 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
         }
 
 
+        float be;
         if (etBe.getText().toString().isEmpty()) {
             be = beHint;
         } else {
@@ -236,6 +225,7 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
         }
 
 
+        float bolus;
         if (etBolus.getText().toString().isEmpty()) {
             bolus = bolusHint;
         } else {
@@ -243,6 +233,7 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
         }
 
 
+        float korrektur;
         if (etKorrektur.getText().toString().isEmpty()) {
             korrektur = korrekturHint;
         } else {
@@ -250,6 +241,7 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
         }
 
 
+        float basal;
         if (etBasal.getText().toString().isEmpty()) {
             basal = basalHint;
         } else {
@@ -261,7 +253,6 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
 
         datum = tvDatum.getText().toString();
         uhrzeit = tvUhrzeit.getText().toString();
-
 
         //if(title.trim().isEmpty()||descrition.trim().isEmpty()){
         //    Toast.makeText(this, "Please insert title and description", Toast.LENGTH_SHORT).show();
@@ -280,15 +271,15 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
             datum = simpleDateFormatDatum.format(new Date());
             uhrzeit = simpleDateFormatUhrzeit.format(new Date());
             currentTimeMillis = System.currentTimeMillis();
-            //aufpasser=0;  todo
+
         }
         //ENDE Datum und Uhrzeit wurden nicht verändert: AUTOMATISCH)
 
 
         else {
 
-            datum = tvDatum.getText().toString();
-            uhrzeit = tvUhrzeit.getText().toString();
+            //datum = tvDatum.getText().toString();
+            //uhrzeit = tvUhrzeit.getText().toString();
             //TTS.speak("jajaja"+uhrzeit);
 
             String datumUndUhrzeit = datum + "-" + uhrzeit+":00";
