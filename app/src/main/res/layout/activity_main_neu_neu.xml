@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/schriftGrauHell"
+            app:contentScrim="@color/colorAccent"
             app:expandedTitleGravity="bottom|right"
            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
 
