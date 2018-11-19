@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import java.util.List;
@@ -76,6 +77,8 @@ public class NoteRepository {
         @Override
         protected Void doInBackground(Note... notes) {
             noteDao.delete(notes[0]);
+
+
 
             //noteDao.insert(notes[0]);   todo
             return null;

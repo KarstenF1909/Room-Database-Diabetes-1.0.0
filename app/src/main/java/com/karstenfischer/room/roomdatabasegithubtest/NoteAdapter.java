@@ -99,6 +99,8 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
 
             coordinatorLayout=itemView.findViewById(R.id.coordinatorLayout);
 
+
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -116,7 +118,6 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
     public NoteHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.note_item, viewGroup, false);
-
         return new NoteHolder(itemView);
     }
 
@@ -179,23 +180,9 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
 
 
         if (currentNote.getKorrektur() == 0) {
-            //noteHolder.tvKorrektur.setTextSize(5f);
-            //noteHolder.tvKorrekturHeader.setTextSize(5f);
-            //noteHolder.tvKorrektur.setTextSize(currentNote.getKorrektur());
-            //noteHolder.tvKorrekturHeader.setTextSize(currentNote.getKorrektur());
             noteHolder.tvKorrektur.setVisibility(View.GONE);
             noteHolder.tvKorrekturHeader.setVisibility(View.GONE);
             noteHolder.tvKorrektur.setText(String.valueOf(currentNote.getKorrektur()));
-            //int currentNoteL= (int) currentNote.getKorrektur();
-
-            //ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            //params.setMargins(currentNoteL,currentNoteL,currentNoteL,currentNoteL);
-            //noteHolder.tvKorrektur.setLayoutParams(params);
-            //noteHolder.tvKorrekturHeader.setLayoutParams(params);
-            //noteHolder.tvKorrektur.setText(String.valueOf(currentNote.getKorrektur()));
-            //params.setMargins(0,18,0,0);
-
-            //noteHolder.tvKorrektur.setTextColor(Color.RED);
         } else {
             noteHolder.tvKorrektur.setVisibility(View.VISIBLE);
             noteHolder.tvKorrekturHeader.setVisibility(View.VISIBLE);
@@ -215,15 +202,14 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
 
 
         if(currentNote.getBlutzucker()<70){
-            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_blau_transparent);
+            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_blau);
         }
         if(currentNote.getBlutzucker()>69&&currentNote.getBlutzucker()<200){
-            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_happy_transparent);
+            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_happy);
         }
         if(currentNote.getBlutzucker()>199){
-            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_unhappy_transparent);
+            noteHolder.ivEmoji.setImageResource(R.drawable.emoji_unhappy);
         }
-
 
         noteHolder.tvDatum.setText(String.valueOf(currentNote.getDatum()));
         noteHolder.tvUhrzeit.setText(String.valueOf(currentNote.getUhrzeit()));

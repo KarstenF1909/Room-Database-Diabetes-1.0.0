@@ -81,10 +81,10 @@
         <item name="colorPrimary">#e9caff</item>
         <item name="colorPrimaryDark">#8b3b96</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="backgroundcolor">#ffffff</item>
+        <item name="backgroundcolor">#310000</item>
         <item name="cardbackground1">#434343</item>
-        <item name="cardbackground2">#fee1ff</item>
-        <item name="textcolor1">#262626</item>
+        <item name="cardbackground2">#848484</item>
+        <item name="textcolor1">#310000</item>
         <item name="textcolor2">#414141</item>
         <item name="textcolor3">#b02b2b</item>
         <item name="tintcolor">#ffffff</item>
@@ -106,8 +106,8 @@
         <item name="backgroundcolor">#434343</item>
         <item name="cardbackground1">#4d4d4d</item>
         <item name="cardbackground2">#101010</item>
-        <item name="textcolor2">#949494</item>
-        <item name="textcolor1">#646464</item>
+        <item name="textcolor1">#949494</item>
+        <item name="textcolor2">#646464</item>
         <item name="textcolor3">#b02b2b</item>
         <item name="tintcolor">#ffffff</item>
         <item name="buttoncolor">#c964fc</item>
