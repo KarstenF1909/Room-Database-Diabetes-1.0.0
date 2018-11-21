@@ -15,6 +15,8 @@ public class NoteRepository {
     private NoteDao noteDao;
     private LiveData<List<Note>> allNotes;
 
+    CoordinatorLayout coordinatorLayout;
+
 
 
     public NoteRepository(Application application) {
@@ -22,6 +24,8 @@ public class NoteRepository {
         noteDao = database.noteDao();
         allNotes = noteDao.getAllNotes();
     }
+
+
 
     public void insert(Note note) {
         new InsertNoteAsyncTask(noteDao).execute(note);
@@ -33,6 +37,8 @@ public class NoteRepository {
 
     public void delete(Note note) {
         new DeleteNoteAsyncTask(noteDao).execute(note);
+
+
 
         //new InsertNoteAsyncTask(noteDao).execute(note);   todo: funktioniert besser als unten
     }

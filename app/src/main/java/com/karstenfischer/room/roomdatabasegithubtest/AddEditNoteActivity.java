@@ -4,10 +4,12 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,10 +23,17 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class AddEditNoteActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -77,6 +86,8 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
 
     private SimpleDateFormat simpleDateFormatDatum = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
     private SimpleDateFormat simpleDateFormatUhrzeit = new SimpleDateFormat("HH:mm", Locale.GERMAN);
+
+
 
 
     @Override
@@ -275,6 +286,8 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
         }
         //Datum, Uhrzeit, currentTimeMillis, eintragDatumMillis ermitteln
 
+
+
         data.putExtra(EXTRA_TITLE, title);
         data.putExtra(EXTRA_DESCRIPTION, description);
         data.putExtra(EXTRA_PRIORITY, priority);
@@ -294,6 +307,16 @@ public class AddEditNoteActivity extends AppCompatActivity implements DatePicker
         if (id != -1) {
             data.putExtra(EXTRA_ID, id);
         }
+
+        Intent intent1=new Intent(getApplicationContext(),EintragInFirestore.class);
+        intent1.putExtra("Blutzucker", blutzucker);
+        TTS.speak("blut eins"+blutzucker);
+        intent1.putExtra("Broteinheiten", be);
+        intent1.putExtra("Bolus", bolus);
+        intent1.putExtra("Korrektur", korrektur);
+        intent1.putExtra("Basal", basal);
+
+        startActivity(intent1);
 
         setResult(RESULT_OK, data);
         finish();

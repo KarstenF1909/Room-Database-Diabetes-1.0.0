@@ -31,17 +31,13 @@ public class MainActivity extends AppCompatActivity {
     public static final int EDIT_NOTE_REQUEST=2;
 
     private NoteViewModel noteViewModel;
-
     private Typeface myFont;
-
     private CoordinatorLayout coordinatorLayout;
-
     private Note note;
     private int diePosition;
-
-
-
+private RecyclerView recyclerView;
     final NoteAdapter adapter=new NoteAdapter();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -51,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_neu_neu);
+
 
         //Wichtig zum Reden!!!
         TTS.init(getApplicationContext());
@@ -76,12 +73,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
         RecyclerView recyclerView=findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+
 
 
         noteViewModel=ViewModelProviders.of(this).get(NoteViewModel.class);
@@ -105,10 +101,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             //public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
             public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {    //todo
+                diePosition=i;
+
+
+              //int blutzuckerZwischenspeicher=note.getBlutzucker();
+              //TTS.speak("Gelöschter Blutzuckerwert"+blutzuckerZwischenspeicher);
+
+
+                TTS.speak("Gelöscht");
                noteViewModel.delete(adapter.getNoteAt(viewHolder.getAdapterPosition()));
                 Toast.makeText(MainActivity.this, "Gelöscht", Toast.LENGTH_SHORT).show();
 
-                diePosition=viewHolder.getAdapterPosition();
+
+
+
+
 
                 //final RecyclerView.ViewHolder vh=viewHolder;
 
@@ -122,23 +129,18 @@ public class MainActivity extends AppCompatActivity {
                         //mAdapter.restoreItem(deletedItem, deletedIndex);
 
                     //TTS.speak("hier passiert noch gar nichts");
+                        noteViewModel.insert(adapter.getNoteAt(viewHolder.getAdapterPosition()));
+                        Toast.makeText(MainActivity.this, "Eingefügt", Toast.LENGTH_SHORT).show();
 
-
-                        noteViewModel.insert(adapter.getNoteAt(diePosition));
+                        //noteViewModel.insert(adapter.getNoteAt(diePosition));
 
 
                     }
                 });
                 snackbar.setActionTextColor(Color.YELLOW);
                 snackbar.show();
-
-
-
-
             }
         }).attachToRecyclerView(recyclerView);
-
-
 
         adapter.setOnItemClickListener(new NoteAdapter.OnItemClickListener() {
             @Override
@@ -149,80 +151,23 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(AddEditNoteActivity.EXTRA_TITLE,note.getTitle());
                 intent.putExtra(AddEditNoteActivity.EXTRA_DESCRIPTION,note.getDescription());
                 intent.putExtra(AddEditNoteActivity.EXTRA_PRIORITY,note.getPriority());
-
                 intent.putExtra(AddEditNoteActivity.EXTRA_BLUTZUCKER,note.getBlutzucker());
                 intent.putExtra(AddEditNoteActivity.EXTRA_BE,note.getBe());
                 intent.putExtra(AddEditNoteActivity.EXTRA_BOLUS,note.getBolus());
                 intent.putExtra(AddEditNoteActivity.EXTRA_KORREKTUR,note.getKorrektur());
                 intent.putExtra(AddEditNoteActivity.EXTRA_BASAL,note.getBasal());
-
                 intent.putExtra(AddEditNoteActivity.EXTRA_DATUM,note.getDatum());
                 intent.putExtra(AddEditNoteActivity.EXTRA_UHRZEIT,note.getUhrzeit());
                 intent.putExtra(AddEditNoteActivity.EXTRA_CURRENT_TIME_MILLIS,note.getCurrentTimeMillis());
                 intent.putExtra(AddEditNoteActivity.EXTRA_EINTRAG_DATUM_MILLIS,note.getEintragDatumMillis());
 
-
                 startActivityForResult(intent,EDIT_NOTE_REQUEST);
             }
         });
-
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==ADD_NOTE_REQUEST&&resultCode==RESULT_OK){
-            String title=data.getStringExtra(AddEditNoteActivity.EXTRA_TITLE);
-            String description=data.getStringExtra(AddEditNoteActivity.EXTRA_DESCRIPTION);
-            int priority=data.getIntExtra(AddEditNoteActivity.EXTRA_PRIORITY,1);
-
-            int blutzucker=data.getIntExtra(AddEditNoteActivity.EXTRA_BLUTZUCKER,1);
-            float be=data.getFloatExtra(AddEditNoteActivity.EXTRA_BE,1);
-            float bolus=data.getFloatExtra(AddEditNoteActivity.EXTRA_BOLUS,1);
-            float korrektur=data.getFloatExtra(AddEditNoteActivity.EXTRA_KORREKTUR,1);
-            float basal=data.getFloatExtra(AddEditNoteActivity.EXTRA_BASAL,1);
-
-            String datum=data.getStringExtra(AddEditNoteActivity.EXTRA_DATUM);
-            String uhrzeit=data.getStringExtra(AddEditNoteActivity.EXTRA_UHRZEIT);
-            long currentTimeMillis=data.getLongExtra(AddEditNoteActivity.EXTRA_CURRENT_TIME_MILLIS,0);
-            long eintragDatumMillis=data.getLongExtra(AddEditNoteActivity.EXTRA_EINTRAG_DATUM_MILLIS,0);
 
 
-            note =new Note(title,description,priority,blutzucker,be,bolus,korrektur,basal,datum,uhrzeit,currentTimeMillis,eintragDatumMillis);
-            noteViewModel.insert(note);
-            Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
-        }
-        else if(requestCode==EDIT_NOTE_REQUEST&&resultCode==RESULT_OK){
-            int id=data.getIntExtra(AddEditNoteActivity.EXTRA_ID,-1);
-
-            if(id==-1){
-                Toast.makeText(this, "Note can't be updated", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            String title=data.getStringExtra(AddEditNoteActivity.EXTRA_TITLE);
-            String description=data.getStringExtra(AddEditNoteActivity.EXTRA_DESCRIPTION);
-            int priority=data.getIntExtra(AddEditNoteActivity.EXTRA_PRIORITY,1);
-
-            int blutzucker=data.getIntExtra(AddEditNoteActivity.EXTRA_BLUTZUCKER,1);
-            float be=data.getFloatExtra(AddEditNoteActivity.EXTRA_BE,1);
-            float bolus=data.getFloatExtra(AddEditNoteActivity.EXTRA_BOLUS,1);
-            float korrektur=data.getFloatExtra(AddEditNoteActivity.EXTRA_KORREKTUR,1);
-            float basal=data.getFloatExtra(AddEditNoteActivity.EXTRA_BASAL,1);
-
-            String datum=data.getStringExtra(AddEditNoteActivity.EXTRA_DATUM);
-            String uhrzeit=data.getStringExtra(AddEditNoteActivity.EXTRA_UHRZEIT);
-            long currentTimeMillis=data.getLongExtra(AddEditNoteActivity.EXTRA_CURRENT_TIME_MILLIS,0);
-            long eintragDatumMillis=data.getLongExtra(AddEditNoteActivity.EXTRA_EINTRAG_DATUM_MILLIS,0);
-
-            Note note=new Note(title,description,priority,blutzucker,be,bolus,korrektur,basal,datum,uhrzeit,currentTimeMillis,eintragDatumMillis);
-            note.setId(id);
-            noteViewModel.update(note);
-            Toast.makeText(this, "Note updated", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            Toast.makeText(this, "Nothing saved", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -242,4 +187,65 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if(requestCode==ADD_NOTE_REQUEST&&resultCode==RESULT_OK){
+            String title=data.getStringExtra(AddEditNoteActivity.EXTRA_TITLE);
+            String description=data.getStringExtra(AddEditNoteActivity.EXTRA_DESCRIPTION);
+            int priority=data.getIntExtra(AddEditNoteActivity.EXTRA_PRIORITY,1);
+            int blutzucker=data.getIntExtra(AddEditNoteActivity.EXTRA_BLUTZUCKER,1);
+            float be=data.getFloatExtra(AddEditNoteActivity.EXTRA_BE,1);
+            float bolus=data.getFloatExtra(AddEditNoteActivity.EXTRA_BOLUS,1);
+            float korrektur=data.getFloatExtra(AddEditNoteActivity.EXTRA_KORREKTUR,1);
+            float basal=data.getFloatExtra(AddEditNoteActivity.EXTRA_BASAL,1);
+            String datum=data.getStringExtra(AddEditNoteActivity.EXTRA_DATUM);
+            String uhrzeit=data.getStringExtra(AddEditNoteActivity.EXTRA_UHRZEIT);
+            long currentTimeMillis=data.getLongExtra(AddEditNoteActivity.EXTRA_CURRENT_TIME_MILLIS,0);
+            long eintragDatumMillis=data.getLongExtra(AddEditNoteActivity.EXTRA_EINTRAG_DATUM_MILLIS,0);
+
+            note =new Note(title,description,priority,blutzucker,be,bolus,korrektur,basal,datum,uhrzeit,currentTimeMillis,eintragDatumMillis);
+            noteViewModel.insert(note);
+            Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
+        }
+
+
+        else if(requestCode==EDIT_NOTE_REQUEST&&resultCode==RESULT_OK){
+            int id=data.getIntExtra(AddEditNoteActivity.EXTRA_ID,-1);
+
+            if(id==-1){
+                Toast.makeText(this, "Note can't be updated", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String title=data.getStringExtra(AddEditNoteActivity.EXTRA_TITLE);
+            String description=data.getStringExtra(AddEditNoteActivity.EXTRA_DESCRIPTION);
+            int priority=data.getIntExtra(AddEditNoteActivity.EXTRA_PRIORITY,1);
+            int blutzucker=data.getIntExtra(AddEditNoteActivity.EXTRA_BLUTZUCKER,1);
+            float be=data.getFloatExtra(AddEditNoteActivity.EXTRA_BE,1);
+            float bolus=data.getFloatExtra(AddEditNoteActivity.EXTRA_BOLUS,1);
+            float korrektur=data.getFloatExtra(AddEditNoteActivity.EXTRA_KORREKTUR,1);
+            float basal=data.getFloatExtra(AddEditNoteActivity.EXTRA_BASAL,1);
+            String datum=data.getStringExtra(AddEditNoteActivity.EXTRA_DATUM);
+            String uhrzeit=data.getStringExtra(AddEditNoteActivity.EXTRA_UHRZEIT);
+            long currentTimeMillis=data.getLongExtra(AddEditNoteActivity.EXTRA_CURRENT_TIME_MILLIS,0);
+            long eintragDatumMillis=data.getLongExtra(AddEditNoteActivity.EXTRA_EINTRAG_DATUM_MILLIS,0);
+
+            Note note=new Note(title,description,priority,blutzucker,be,bolus,korrektur,basal,datum,uhrzeit,currentTimeMillis,eintragDatumMillis);
+            note.setId(id);
+            noteViewModel.update(note);
+            Toast.makeText(this, "Note updated", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this, "Nothing saved", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+
 }

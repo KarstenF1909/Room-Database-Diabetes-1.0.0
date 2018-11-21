@@ -31,6 +31,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/duesterAddEdittheme"
             android:parentActivityName=".MainActivity"/>
+
+
+        <activity android:name=".EintragInFirestore" />
+
+
     </application>
 
 </manifest>
